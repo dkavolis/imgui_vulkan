@@ -1,0 +1,30 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+    "name": "imgui-vulkan",
+    "version": "0.0.1",
+    "dependencies": [
+        {
+            "name": "fmt",
+            "version>=": "8"
+        },
+        {
+            "name": "sdl2",
+            "features": [
+                "vulkan"
+            ]
+        },
+        {
+            "name": "imgui",
+            "features": [
+                "vulkan-binding",
+                "sdl2-binding"
+            ]
+        }
+    ],
+    "features": {
+        "test": {
+            "description": "Build tests",
+            "dependencies": []
+        }
+    }
+}
