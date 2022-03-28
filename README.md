@@ -26,8 +26,7 @@ Link in CMake
 target_link_libraries(<TARGET> PUBLIC imgui_vulkan::imgui_vulkan)
 ```
 
-or embed [config.hpp](include/imgui_vulkan/config.hpp),
-[imgui_vulkan.hpp](include/imgui_vulkan/imgui_vulkan.hpp) and
+or embed [imgui_vulkan.hpp](include/imgui_vulkan/imgui_vulkan.hpp) and
 [imgui_vulkan.cpp](src/imgui_vulkan.cpp) into your project and link to
 dependencies
 

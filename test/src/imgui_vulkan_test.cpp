@@ -22,6 +22,9 @@
  * SOFTWARE.
  */
 
+// enable unlimited framerate for smoother display
+#define IMGUI_UNLIMITED_FRAME_RATE
+
 #include <imgui_vulkan/imgui_vulkan.hpp>
 
 IMGUI_VK_MSVC_WARNING_DISABLE(4005)

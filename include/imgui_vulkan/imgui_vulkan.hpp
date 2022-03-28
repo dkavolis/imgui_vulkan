@@ -33,10 +33,34 @@
 #include <stdexcept>
 #include <string>
 
-#include "config.hpp"
+#define IMGUI_VK_DO_PRAGMA(x) _Pragma(#x)
+#if defined(__GNUC__) && !defined(__clang__)
+#  define IMGUI_VK_GCC_DIAGNOSTIC_IGNORED(wrn) \
+    IMGUI_VK_DO_PRAGMA(GCC diagnostic push)    \
+    IMGUI_VK_DO_PRAGMA(GCC diagnostic ignored wrn)
+#  define IMGUI_VK_GCC_DIAGNOSTIC_POP() IMGUI_VK_DO_PRAGMA(GCC diagnostic pop)
+#else
+#  define IMGUI_VK_GCC_DIAGNOSTIC_IGNORED(wrn)
+#  define IMGUI_VK_GCC_DIAGNOSTIC_POP()
+#endif
 
-// enable unlimited framerate for smoother display
-#define IMGUI_UNLIMITED_FRAME_RATE
+#if defined(__clang__)
+#  define IMGUI_VK_CLANG_DIAGNOSTIC_IGNORED(wrn) \
+    IMGUI_VK_DO_PRAGMA(clang diagnostic push)    \
+    IMGUI_VK_DO_PRAGMA(clang diagnostic ignored wrn)
+#  define IMGUI_VK_CLANG_DIAGNOSTIC_POP() IMGUI_VK_DO_PRAGMA(clang diagnostic pop)
+#else
+#  define IMGUI_VK_CLANG_DIAGNOSTIC_IGNORED(wrn)
+#  define IMGUI_VK_CLANG_DIAGNOSTIC_POP()
+#endif
+
+#if defined(_MSC_VER)
+#  define IMGUI_VK_MSVC_WARNING_DISABLE(wrn) __pragma(warning(push)) __pragma(warning(disable : wrn))
+#  define IMGUI_VK_MSVC_WARNING_POP() __pragma(warning(pop))
+#else
+#  define IMGUI_VK_MSVC_WARNING_DISABLE(wrn)
+#  define IMGUI_VK_MSVC_WARNING_POP()
+#endif
 
 // installing imgui through vcpkg with vulkan/sdl2 will also add the macros to command line and imconfig.h...
 IMGUI_VK_MSVC_WARNING_DISABLE(4005)
@@ -45,6 +69,13 @@ IMGUI_VK_MSVC_WARNING_POP()
 
 struct SDL_Window;
 struct ImGui_ImplVulkanH_Window;
+
+#define IMGUI_VK_NAMESPACE_BEGIN \
+  namespace imgui_vulkan {       \
+  inline namespace v0 {
+#define IMGUI_VK_NAMESPACE_END \
+  } /* namespace v0 */         \
+  } /* namespace imgui_vulkan */
 
 IMGUI_VK_NAMESPACE_BEGIN
 

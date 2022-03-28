@@ -36,6 +36,14 @@
 
 IMGUI_VK_NAMESPACE_BEGIN
 
+#if defined(_MSC_VER)
+#  define IMGUI_VK_NOINLINE __declspec(noinline)
+#elif defined(__GNUC__) || defined(__clang__)
+#  define IMGUI_VK_NOINLINE __attribute__((noinline))
+#else
+#  define IMGUI_VK_NOINLINE
+#endif
+
 #ifdef _DEBUG
 #  define IMGUI_VK_DEBUG_REPORT
 #endif
