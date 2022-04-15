@@ -659,26 +659,29 @@ void Window::draw() {
         event.type != SDL_QUIT && !(event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE &&
                                     event.window.windowID == SDL_GetWindowID(window_));
 
-    // Resize swap chain?
-    vulkan_->maybe_resize_swap_chain(window_);
+    if (!running_) { return; }
+  }
 
-    // Start the Dear ImGui frame
-    ImGui_ImplVulkan_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
-    ImGui::NewFrame();
+  // Resize swap chain?
+  vulkan_->maybe_resize_swap_chain(window_);
 
-    on_gui();
+  // Start the Dear ImGui frame
+  ImGui_ImplVulkan_NewFrame();
+  ImGui_ImplSDL2_NewFrame();
+  ImGui::NewFrame();
 
-    // Rendering
-    ImGui::Render();
-    ImDrawData* draw_data = ImGui::GetDrawData();
-    const bool is_minimized = (draw_data->DisplaySize.x <= 0.0f || draw_data->DisplaySize.y <= 0.0f);
-    if (!is_minimized) [[likely]] {
-      auto* wd = &vulkan_->main_window_data();
-      before_render_frame(wd, draw_data);
-      vulkan_->render_frame(wd, draw_data);
-      vulkan_->present_frame(wd);
-    }
+  on_gui();
+  if (!running_) { return; }
+
+  // Rendering
+  ImGui::Render();
+  ImDrawData* draw_data = ImGui::GetDrawData();
+  const bool is_minimized = (draw_data->DisplaySize.x <= 0.0f || draw_data->DisplaySize.y <= 0.0f);
+  if (!is_minimized) [[likely]] {
+    auto* wd = &vulkan_->main_window_data();
+    before_render_frame(wd, draw_data);
+    vulkan_->render_frame(wd, draw_data);
+    vulkan_->present_frame(wd);
   }
 }
 
